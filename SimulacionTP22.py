@@ -121,40 +121,75 @@ Uniforme=(UNIFORM(1,3))
 Gamma=(GAMMA(3, 1))
 Exponencial=(EXPENT(1))
 Pascal=PASCAL(3,0.3)
-Binomial = BINOMIAL (1000, 0.3)
+Binomial = BINOMIAL (30, 0.4)
 Poisson = POISSON(100)
 Hipergeometrica = HIPERGEOMETRICA(10,5,0.4)
-Normal=NORMAL(2.35,85.5)
+Normal=NORMAL(2.35,30)
 Empirica=EMPIRICA()
-def plotear(U, G, E, P, B, PS, H, N, EM):
+def plotear(U, E, G, N, P, B, PS, H, EM):
+    # distribuciones continuas
+    # -------------Graficar uniforme---------------
+    numerosUniformes = ss.uniform.rvs(size=1000, loc = 1, scale=3)
+    sns.kdeplot(numerosUniformes, label="Distribución esperada")
+    sns.distplot(U, hist_kws=dict(edgecolor="k"), label="Distribución observada")
     plt.title("Distribución Uniforme")
-    plt.hist(U)
+    plt.legend(loc="upper left")
     plt.show()
+
+    # -------------Graficar Exponencial---------------
+    numerosExponenciales=ss.expon.rvs(size=1000, loc=0, scale=1)
+    sns.kdeplot(numerosExponenciales, label="Distribución esperada")
+    sns.distplot(E, hist_kws=dict(edgecolor="k"), label="Distribución observada")
     plt.title("Distribución Exponencial")
-    plt.hist(E)
+    plt.legend(loc="upper left")
     plt.show()
+
+    # -------------Graficar Gamma---------------
     plt.title("Distribución Gamma")
-    plt.hist(G)
+    plt.hist(G, alpha=1, edgecolor='black')
     plt.show()
+
+    # -------------Graficar Normal---------------
+    plt.title("Distribución Normal")
+    plt.hist(N, alpha=1, edgecolor='black')
+    plt.show()
+    
+    # distribuciones discretas
+
+    # -------------Graficar Pascal---------------
     plt.title("Distribución Pascal")
-    plt.hist(P)
+    plt.hist(P, alpha=1, edgecolor='black')
     plt.show()
+
+    #------------ Graficar binomial--------------
+    N, p = 30, 0.4  # parametros de forma
+    binomial = ss.binom(N, p)  # Distribución
+    x = np.arange(binomial.ppf(0.01),
+                  binomial.ppf(0.99))
+    fmp = binomial.pmf(x)  # Función de Masa de Probabilidad
+    plt.plot(x, fmp, '--' , label="Distribución esperada")
+    sns.distplot(B,  hist_kws=dict(edgecolor="k"), label="Distribución observada")
     plt.title("Distribución Binomial")
-    plt.hist(B)
+    plt.ylabel('probabilidad')
+    plt.xlabel('valores')
+    plt.legend(loc="upper left")
     plt.show()
+
+    # -------------Graficar Poisson---------------
     plt.title("Distribución de Poisson")
-    plt.hist(PS)
+    plt.hist(PS, alpha=1, edgecolor = 'black')
     plt.show()
+
+    # -------------Graficar Hiper---------------
     plt.title("Distribución Hipergeometrica")
-    plt.hist(H)
+    plt.hist(H, alpha=1, edgecolor = 'black')
     plt.show()
-    plt.title("Distribucion Normal")
-    plt.hist(N)
-    plt.show()
+    #-------------Graficar empirica------------
     plt.title("Distribucion Empirica")
     plt.plot(EM)
     plt.show()
     
-plotear(Uniforme, Exponencial, Gamma, Pascal, Binomial, Poisson, Hipergeometrica, Normal, Empirica)
+plotear(Uniforme , Exponencial , Gamma , Normal, Pascal, Binomial, Poisson, Hipergeometrica, Empirica)
+
 
 
