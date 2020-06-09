@@ -95,7 +95,7 @@ def HIPERGEOMETRICA(tn, ns, p):
 def normal(x,mean,sd):
     lista_normal=[]
     sum=0
-    for j in range(1000)
+    for j in range(1000):
         for i in (1, 12):
             r=random.random()
             sum=sum+r
