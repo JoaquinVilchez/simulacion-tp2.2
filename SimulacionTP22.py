@@ -92,16 +92,30 @@ def HIPERGEOMETRICA(tn, ns, p):
     
     return listado_hipergeometrica
 
-def normal(x,mean,sd):
+def normal(mean,sd):
     lista_normal=[]
-    sum=0
     for j in range(1000):
+        sum=0.0
         for i in (1, 12):
             r=random.random()
             sum=sum+r
-        x=(sd*(sum-6)+mean)
+        x=(sd*(sum-6.0)+mean)
         lista_normal.append(x)
     return lista_normal
+
+def empirica():
+  lista_empirica=[]
+  p=[0.273,0.037,0.195,0.009,0.124,0.058,0.062,0.151,0.047,0.044]
+  for j in range (1000):
+      r=random.random()
+      a=0
+      for i in p:
+        a+=i
+        if (r<=a):
+          break
+      lista_empirica.append(a)
+  return lista_empirica
+
 
 Uniforme=(UNIFORM(1,3))
 Gamma=(GAMMA(3, 1))
@@ -110,8 +124,9 @@ Pascal=PASCAL(3,0.3)
 Binomial = BINOMIAL (1000, 0.3)
 Poisson = POISSON(100)
 Hipergeometrica = HIPERGEOMETRICA(10,5,0.4)
-Normal=Normal()
-def plotear(U, G, E, P, B, PS, H, N):
+Normal=Normal(2.35,85.5)
+Empirica=Empirica()
+def plotear(U, G, E, P, B, PS, H, N, EM):
     plt.title("Distribución Uniforme")
     plt.hist(U)
     plt.show()
@@ -135,7 +150,11 @@ def plotear(U, G, E, P, B, PS, H, N):
     plt.show()
     plt.title("Distribucion Normal")
     plt.hist(N)
+    plt.show()
+    plt.title("Distribucion Empirica")
+    plt.plot(EM)
+    plt.show()
     
-plotear(Uniforme , Exponencial , Gamma , Pascal, Binomial, Poisson, Hipergeometrica, Normal)
+plotear(Uniforme , Exponencial , Gamma , Pascal, Binomial, Poisson, Hipergeometrica, Normal, Empirica)
 
 
