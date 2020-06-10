@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 import scipy.stats as ss
-
+#-----------------------------DISTRIBUCIONES CONTINUAS-----------------------------
 def UNIFORM (a,b):
     x=[]
     for i in range(1000):
@@ -31,6 +31,17 @@ def GAMMA (k,a):
         x.append(-(math.log10(tr))/a)
     return x
 
+def NORMAL(mean,sd):
+    lista_normal=[]
+    for j in range(1000):
+        sum=0
+        for i in range(1, 12):
+            r=random.random()
+            sum=sum+r
+        x=(sd*(sum-6))+mean
+        lista_normal.append(x)
+    return lista_normal
+#--------------------------DISTRIBUCIONES DISCRETAS-----------------------
 def PASCAL(k,q):
     nx = []
     for i in range(1000):
@@ -92,17 +103,6 @@ def HIPERGEOMETRICA(tn, ns, p):
         listado_hipergeometrica.append(p_variable)
     
     return listado_hipergeometrica
-
-def NORMAL(mean,sd):
-    lista_normal=[]
-    for j in range(1000):
-        sum=0
-        for i in range(1, 12):
-            r=random.random()
-            sum=sum+r
-        x=(sd*(sum-6))+mean
-        lista_normal.append(x)
-    return lista_normal
 
 def EMPIRICA():
   lista_empirica=[]
@@ -190,6 +190,7 @@ def plotear(U, E, G, N, P, B, PS, H, EM):
     plt.plot(xLine, fmp,  label="Distribución esperada")
     sns.distplot(PS, hist_kws=dict(edgecolor="k"), label="Distribución observada")
     plt.title("Distribución de Poisson")
+    plt.legend(loc="upper left")
     plt.show()
 
     # -------------Graficar Hiper---------------
@@ -202,6 +203,34 @@ def plotear(U, E, G, N, P, B, PS, H, EM):
     plt.show()
     
 plotear(Uniforme , Exponencial , Gamma , Normal, Pascal, Binomial, Poisson, Hipergeometrica, Empirica)
+#---------------Test chi2 a la distribucion empirica---------
+def TestChi2(emp):
+    print("Test Chi Cuadrado para la distribucion Empírica")
+    obs = []
+    esp = []
+    chi2tabla = round(ss.chi2.ppf(1 - 0.05, 9), 2)
+    p = [0.273, 0.037, 0.195, 0.009, 0.124, 0.058, 0.062, 0.151, 0.047, 0.044]
+    for i in range(10):
+        x = 0
+        for j in range(len(emp)):
+            if emp[j]==i+1:
+                x += 1
+        obs.append(x)
+        esp.append(1000 * p[i])
+    chi2exp = 0
+    n=len(obs)
+    for i in range(n):
+        x1 = (((obs[i]-esp[i])**2)/esp[i])
+        chi2exp += x1
 
+    print('χ2 experimento:', chi2exp)
+    print('χ2 critico:', chi2tabla)
+    if (chi2exp < chi2tabla):
+        print("La muestra de datos pasa el test")
+    else:
+        print("La muestra de datos NO pasa el test")
+
+
+TestChi2(Empirica)
 
 
