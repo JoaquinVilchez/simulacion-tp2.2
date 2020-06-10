@@ -110,6 +110,7 @@ def EMPIRICA():
   for j in range (1000):
       r=random.random()
       a=0
+      x=1
       for i in p:
         a+=i
         if (r<=a):
