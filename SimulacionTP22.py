@@ -3,6 +3,8 @@ import math
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
+import scipy.stats as ss
 
 def UNIFORM (a,b):
     x=[]
@@ -95,11 +97,11 @@ def HIPERGEOMETRICA(tn, ns, p):
 def NORMAL(mean,sd):
     lista_normal=[]
     for j in range(1000):
-        sum=0.0
-        for i in (1, 12):
+        sum=0
+        for i in range(1, 12):
             r=random.random()
             sum=sum+r
-        x=(sd*(sum-6.0)+mean)
+        x=(sd*(sum-6)+mean)
         lista_normal.append(x)
     return lista_normal
 
@@ -150,8 +152,11 @@ def plotear(U, E, G, N, P, B, PS, H, EM):
     plt.show()
 
     # -------------Graficar Normal---------------
+    numerosNormales=ss.norm.rvs(loc=0, scale=1, size=1, random_state=None)
+    sns.kdeplot(numerosNormales, label="Distribución esperada")
+    sns.distplot(N, hist_kws=dict(edgecolor="k"), label="Distribución observada")    
     plt.title("Distribución Normal")
-    plt.hist(N, alpha=1, edgecolor='black')
+    plt.legend(loc="upper left")
     plt.show()
     
     # distribuciones discretas
@@ -176,8 +181,11 @@ def plotear(U, E, G, N, P, B, PS, H, EM):
     plt.show()
 
     # -------------Graficar Poisson---------------
+    numerosPoisson = ss.poisson.rvs(np.exp(-100),size=1000, loc=0)
+    sns.kdeplot(numerosPoisson, label="Distribución esperada")
+    sns.distplot(PS, hist_kws=dict(edgecolor="k"), label="Distribución observada")   
     plt.title("Distribución de Poisson")
-    plt.hist(PS, alpha=1, edgecolor = 'black')
+    plt.legend(loc="upper left")
     plt.show()
 
     # -------------Graficar Hiper---------------
