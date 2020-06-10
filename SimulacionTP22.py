@@ -101,7 +101,7 @@ def NORMAL(mean,sd):
         for i in range(1, 12):
             r=random.random()
             sum=sum+r
-        x=(sd*(sum-6)+mean)
+        x=(sd*(sum-6))+mean
         lista_normal.append(x)
     return lista_normal
 
@@ -152,7 +152,7 @@ def plotear(U, E, G, N, P, B, PS, H, EM):
     plt.show()
 
     # -------------Graficar Normal---------------
-    numerosNormales=ss.norm.rvs(loc=0, scale=1, size=1, random_state=None)
+    numerosNormales = ss.norm.rvs(size=1000, loc=2.35, scale=30)
     sns.kdeplot(numerosNormales, label="Distribución esperada")
     sns.distplot(N, hist_kws=dict(edgecolor="k"), label="Distribución observada")    
     plt.title("Distribución Normal")
