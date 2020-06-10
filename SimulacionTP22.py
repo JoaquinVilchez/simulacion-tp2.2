@@ -56,20 +56,19 @@ def BINOMIAL (n,p):
 
 def POISSON(p):
     listado_poisson = []
-    for i in range(10000):
+    for i in range(1000):
         x = 0
         b = np.exp(-p)
         tr = 1
         r = np.random.rand()
-        tr = tr*r
+        tr = tr * r
 
-        if((tr-b)>=0):
-            x = x+1
+        while ((tr - b) >= 0):
+            x = x + 1
             r = np.random.rand()
-            tr = tr*r
+            tr = tr * r
+        listado_poisson.append(x)
 
-        listado_poisson.append(tr-b)
-    
     return listado_poisson
 
 def HIPERGEOMETRICA(tn, ns, p):
@@ -115,7 +114,9 @@ def EMPIRICA():
         a+=i
         if (r<=a):
           break
-      lista_empirica.append(a)
+        else:
+          x=x+1
+      lista_empirica.append(x)
   return lista_empirica
 
 
@@ -124,7 +125,7 @@ Gamma=(GAMMA(3, 1))
 Exponencial=(EXPENT(1))
 Pascal=PASCAL(3,0.3)
 Binomial = BINOMIAL (30, 0.4)
-Poisson = POISSON(100)
+Poisson = POISSON(3.6)
 Hipergeometrica = HIPERGEOMETRICA(10,5,0.4)
 Normal=NORMAL(2.35,30)
 Empirica=EMPIRICA()
@@ -181,11 +182,13 @@ def plotear(U, E, G, N, P, B, PS, H, EM):
     plt.show()
 
     # -------------Graficar Poisson---------------
-    numerosPoisson = ss.poisson.rvs(np.exp(-100),size=1000, loc=0)
-    sns.kdeplot(numerosPoisson, label="Distribución esperada")
-    sns.distplot(PS, hist_kws=dict(edgecolor="k"), label="Distribución observada")   
+    poisson = ss.poisson(3.6)
+    xLine = np.arange(poisson.ppf(0.01),
+                      poisson.ppf(0.99))
+    fmp = poisson.pmf(xLine)
+    plt.plot(xLine, fmp,  label="Distribución esperada")
+    sns.distplot(PS, hist_kws=dict(edgecolor="k"), label="Distribución observada")
     plt.title("Distribución de Poisson")
-    plt.legend(loc="upper left")
     plt.show()
 
     # -------------Graficar Hiper---------------
@@ -193,8 +196,8 @@ def plotear(U, E, G, N, P, B, PS, H, EM):
     plt.hist(H, alpha=1, edgecolor = 'black')
     plt.show()
     #-------------Graficar empirica------------
+    sns.distplot(EM, hist_kws=dict(edgecolor="k"), label="Distribución observada")
     plt.title("Distribucion Empirica")
-    plt.plot(EM)
     plt.show()
     
 plotear(Uniforme , Exponencial , Gamma , Normal, Pascal, Binomial, Poisson, Hipergeometrica, Empirica)
